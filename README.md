@@ -1,3 +1,5 @@
+<img src="assets/banner.svg" alt="Gravion Hacker" width="100%"/>
+
 # ⚔️ Gravion Hacker
 
 **A–Z authorized security assessment suite — offline-first, evidence-driven, report-ready.**
