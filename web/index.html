@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gravion Hacker — Authorized Security Assessment Suite</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">GRAVION SECURITY TOOLS</p>
+        <h1>Gravion <span class="glow">Hacker</span></h1>
+        <p class="tagline">A–Z authorized security assessment — smarter correlation, faster local analysis, evidence-driven reports.</p>
+        <div class="hero-stats" aria-label="Suite highlights">
+          <span class="stat"><strong>Offline-first</strong> local engine</span>
+          <span class="stat"><strong>Smart</strong> dedupe + priority</span>
+          <span class="stat"><strong>Fast</strong> presets + timing</span>
+          <span class="stat"><strong>AI</strong> local/BYO modes</span>
+        </div>
+        <div class="ethics" role="note">
+          <strong>Ethical use only.</strong> Use this tool only ethically and lawfully, on systems you own or are
+          explicitly authorized to test. Any misuse is solely the responsibility of the person using it.
+          This suite contains no exploit payloads, no auth bypass, no brute force and no malware — it is built
+          for authorized assessment, evidence and reporting.
+        </div>
+      </div>
+      <section class="card pet-card" aria-label="Hacker pet">
+        <h2>Hacker pet</h2>
+        <div class="pet-stage"><div class="pet-ring"></div><div id="hacker-pet" class="hacker-pet" aria-hidden="true">G</div></div>
+        <p id="pet-status" class="pet-status">Idle — paste local data and run a preset.</p>
+        <label>Pet style
+          <select id="pet-style">
+            <option value="orb">Orb guardian</option>
+            <option value="fox">Fox scout</option>
+            <option value="bot">Bot buddy</option>
+          </select>
+        </label>
+      </section>
+    </div>
+  </header>
+
+  <main>
+    <section class="card gate">
+      <h2>Authorization gate</h2>
+      <p>Local pasted-data checks run fully offline in your browser. URL-based review stays locked until you
+      record a scope and confirm authorization; even then, paste headers captured from your own authorized
+      session — this page never scans third parties.</p>
+      <label>Scope name <input id="scope-name" type="text" placeholder="e.g. local-lab"></label>
+      <label class="check"><input id="auth-confirm" type="checkbox">
+        I confirm I own this target or have explicit written / in-scope authorization to test it.</label>
+      <label>Target URL (optional, single target)
+        <input id="target-url" type="url" placeholder="https://your-authorized-lab.example" disabled></label>
+      <p id="gate-status" class="muted">URL field locked — complete the authorization gate to enable it.</p>
+    </section>
+
+    <section class="card presets">
+      <h2>Fast presets</h2>
+      <p>Run correlated local analysis instantly. Presets only use pasted data in this browser.</p>
+      <div class="actions">
+        <button data-preset="quick">Quick</button>
+        <button data-preset="full">Full A–Z</button>
+        <button data-preset="report-only">Report-only imports</button>
+      </div>
+      <p id="timing" class="muted"></p>
+      <div class="console" id="scan-console" aria-live="polite">gravion-hacker ready
+scope: local-lab
+mode: offline local analysis
+<span class="cursor"></span></div>
+      <div class="severity-bars" id="severity-bars" aria-label="Severity summary"></div>
+    </section>
+
+    <section class="card ai-panel">
+      <h2>AI mode</h2>
+      <p>Built-in offline assistant explains local findings. BYO mode uses your generic endpoint/model/key only for local findings text; it never runs attacks or bypasses scope gates.</p>
+      <div class="actions">
+        <button id="ai-explain" class="secondary">Explain findings offline</button>
+        <button id="ai-draft" class="secondary">Draft report section</button>
+      </div>
+      <label>Generic endpoint <input id="ai-endpoint" type="url" placeholder="https://your-endpoint.example/v1/chat"></label>
+      <label>Model <input id="ai-model" type="text" placeholder="your-model-name"></label>
+      <label>API key (local storage only) <input id="ai-key" type="password" autocomplete="off" placeholder="Never commit keys"></label>
+      <p class="muted">Warning: never commit API keys. The key is kept only in this browser's local storage when you save it.</p>
+      <div class="actions">
+        <button id="ai-save" class="secondary">Save BYO config locally</button>
+        <button id="ai-prompt" class="secondary">Build BYO prompt</button>
+      </div>
+      <div class="console" id="ai-output" aria-live="polite">AI mode ready. Run a preset first, then explain findings offline.</div>
+    </section>
+
+    <section class="grid">
+      <article class="card module">
+        <h2>HTTP headers</h2>
+        <textarea id="headers-input" rows="7" placeholder="Paste response headers from your authorized session"></textarea>
+        <button data-run="headers">Audit headers</button>
+      </article>
+      <article class="card module">
+        <h2>Cookies &amp; CORS</h2>
+        <textarea id="cookies-input" rows="7" placeholder="Paste Set-Cookie / CORS headers"></textarea>
+        <button data-run="cookies">Audit cookies &amp; CORS</button>
+      </article>
+      <article class="card module">
+        <h2>JWT (offline)</h2>
+        <textarea id="jwt-input" rows="7" placeholder="Paste a JWT from your own test account"></textarea>
+        <button data-run="jwt">Audit JWT</button>
+      </article>
+      <article class="card module">
+        <h2>Secret scan (redacted)</h2>
+        <textarea id="secrets-input" rows="7" placeholder="Paste local config/source text — findings are redacted"></textarea>
+        <button data-run="secrets">Scan secrets</button>
+      </article>
+      <article class="card module">
+        <h2>Password policy</h2>
+        <label>Minimum length <input id="pw-min" type="number" min="1" value="8"></label>
+        <label class="check"><input id="pw-mfa" type="checkbox"> MFA available</label>
+        <label class="check"><input id="pw-breached" type="checkbox"> Breached-password screening</label>
+        <label class="check"><input id="pw-rate" type="checkbox"> Login rate limiting</label>
+        <button data-run="password">Audit policy</button>
+      </article>
+      <article class="card module">
+        <h2>Authorized output imports</h2>
+        <textarea id="imports-input" rows="7" placeholder="Paste Nuclei JSONL, ffuf JSON, Gobuster text or sqlmap summary from your authorized scope"></textarea>
+        <button data-run="imports">Import &amp; correlate</button>
+      </article>
+      <article class="card module">
+        <h2>Bug bounty workflow</h2>
+        <ul class="checklist">
+          <li>Scope &amp; exclusions re-read today</li>
+          <li>Dedupe checked (disclosed reports, CVEs, changelogs)</li>
+          <li>7-question gate passed</li>
+          <li>Evidence minimal, redacted, own-account only</li>
+          <li>Draft reviewed — submission is always manual</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="card results">
+      <h2>Findings</h2>
+      <div class="actions">
+        <label>Severity
+          <select id="severity-filter">
+            <option value="all">All</option><option value="critical">Critical</option><option value="high">High</option>
+            <option value="medium">Medium</option><option value="low">Low</option><option value="info">Info</option>
+          </select>
+        </label>
+        <label>Module
+          <select id="module-filter">
+            <option value="all">All</option><option value="headers">headers</option><option value="cookies">cookies</option>
+            <option value="cors">cors</option><option value="jwt">jwt</option><option value="secrets">secrets</option>
+            <option value="password-policy">password-policy</option><option value="import:nuclei">import:nuclei</option>
+            <option value="import:ffuf">import:ffuf</option><option value="import:gobuster">import:gobuster</option>
+            <option value="import:sqlmap">import:sqlmap</option>
+          </select>
+        </label>
+      </div>
+      <div id="results"><p class="muted">Run a module to see findings here.</p></div>
+      <div class="actions">
+        <button id="export-json">Export JSON report</button>
+        <button id="export-md">Export Markdown report</button>
+        <button id="copy-bounty">Copy bounty draft</button>
+        <button id="clear-results">Clear</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Gravion Hacker by Priyanshu Kumar Thakur · Offline-first · Authorized testing only</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
