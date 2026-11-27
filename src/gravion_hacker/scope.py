@@ -19,7 +19,7 @@ class AuthorizationRecord:
             problems.append("scope name is required")
         if not self.owner.strip():
             problems.append("asset owner is required")
-        if not self.targets:
+        if not [t for t in self.targets if str(t).strip()]:
             problems.append("at least one in-scope target is required")
         if not self.authorized:
             problems.append("explicit authorization confirmation is required")

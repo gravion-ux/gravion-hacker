@@ -236,9 +236,13 @@ function updatePet(state) {
   }
 }
 
+function escHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
 function updateConsole(lines) {
   const box = document.getElementById("scan-console");
-  if (box) box.innerHTML = `${lines.join("\n")}\n<span class="cursor"></span>`;
+  if (box) box.innerHTML = `${lines.map(escHtml).join("\n")}\n<span class="cursor"></span>`;
 }
 
 function renderSeverityBars() {
@@ -265,9 +269,9 @@ function render() {
     return;
   }
   box.innerHTML = visible.map((f) =>
-    `<div class="finding"><span class="badge badge-${f.severity}">${f.severity}</span> <strong>${f.title}</strong>` +
-    `<div class="muted">${f.module} · priority ${f.priority ?? ""} · confidence ${f.confidence ?? ""} · ${(f.sources || []).join(", ")}</div>` +
-    `<div class="muted">${f.evidence}</div><div>${f.remediation}</div></div>`
+    `<div class="finding"><span class="badge badge-${escHtml(f.severity)}">${escHtml(f.severity)}</span> <strong>${escHtml(f.title)}</strong>` +
+    `<div class="muted">${escHtml(f.module)} · priority ${escHtml(f.priority ?? "")} · confidence ${escHtml(f.confidence ?? "")} · ${escHtml((f.sources || []).join(", "))}</div>` +
+    `<div class="muted">${escHtml(f.evidence)}</div><div>${escHtml(f.remediation)}</div></div>`
   ).join("");
 }
 

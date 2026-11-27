@@ -1,0 +1,17 @@
+name: Bug report
+description: Report a reproducible bug
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Describe the bug, steps to reproduce, expected vs actual behaviour, and version/commit. Do not include secrets or personal data.
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      description: OS, runtime version, and command used.
